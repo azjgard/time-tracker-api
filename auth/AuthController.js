@@ -1,41 +1,38 @@
-const express = require('express');
-const router = express.Router();
-const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-const User = require('../user/User');
-const {generateToken} = require('./JWTController');
-const {hashPassword} = require('./AuthUtilities');
+const key = process.env.JWT_KEY;
 
-const {getUserByEmailOrName} = require('../user/UserController');
+const generateToken = (data, expiresInHours) =>
+  jwt.sign(data, key, {
+    expiresIn: expiresInHours * 3600,
+  });
 
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+const getJWT = req => req.headers['x-access-token'];
 
-router.post('/register', async (req, res) => {
-  const {name, email, password: rawPassword} = req.body;
+const verifyJWT = token =>
+  new Promise((resolve, reject) => {
+    jwt.verify(token, key, (err, decoded) => {
+      if (err) reject(err);
+      resolve(decoded);
+    });
+  });
 
-  const password = await hashPassword(rawPassword);
+module.exports.jwt = {generateToken, getJWT, verifyJWT};
 
-  const sendError = error =>
-    res
-      .status(500)
-      .send({message: 'There was a problem registering the user', error});
+const genSalt = num =>
+  new Promise(resolve => bcrypt.genSalt(num, (err, salt) => resolve(salt)));
 
-  const userExists = await getUserByEmailOrName(email, name).catch(sendError);
+const hash = (password, salt) =>
+  new Promise(resolve =>
+    bcrypt.hash(password, salt, (err, hash) => resolve(hash)),
+  );
 
-  if (userExists) {
-    sendError('User already exists');
-  } else {
-    const newUser = await User.create({
-      name,
-      email,
-      password,
-    }).catch(sendError);
+const hashPassword = password =>
+  new Promise(async resolve => {
+    const salt = await genSalt(8);
+    const hashedPassword = await hash(password, salt);
+    resolve(hashedPassword);
+  });
 
-    const token = generateToken({id: newUser._id}, 24);
-
-    res.status(200).send({auth: true, token});
-  }
-});
-
-module.exports = router;
+module.exports.hash = {hashPassword};

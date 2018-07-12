@@ -7,4 +7,16 @@ const getUserByEmail = email => User.findOne({email}, {password: 0});
 const getUserByEmailOrName = (email, name) =>
   User.findOne({$or: [{email}, {name}]});
 
-module.exports = {getUserById, getUserByEmail, getUserByEmailOrName};
+const createUser = (name, email, password) =>
+  User.create({
+    name,
+    email,
+    password,
+  });
+
+module.exports = {
+  getUserById,
+  getUserByEmail,
+  getUserByEmailOrName,
+  createUser,
+};

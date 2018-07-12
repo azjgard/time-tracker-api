@@ -1,6 +1,4 @@
-const {getJWT, verifyJWT} = require('./auth/JWTController');
-const User = require('./user/User');
-
+const {getJWT, verifyJWT} = require('./auth/AuthController').jwt;
 const {getUserById} = require('./user/UserController');
 
 const jwtProtected = async (req, res, next) => {
@@ -16,8 +14,13 @@ const jwtProtected = async (req, res, next) => {
   next();
 };
 
+const errorCodes = (req, res, next) => {
+  res._sendError = message => res.status(500).send({message});
+  next();
+};
+
 function unauthorized(res) {
   res.status(500).send({message: 'Unauthorized.'});
 }
 
-module.exports = {jwtProtected};
+module.exports = {errorCodes, jwtProtected};
