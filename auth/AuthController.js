@@ -11,7 +11,7 @@ router.use(bodyParser.json());
 
 router.post('/register', async (req, res) => {
   const {name, email, password: rawPassword} = req.body;
-  const password = hashPassword();
+  const password = hashPassword(rawPassword);
 
   const sendError = error =>
     res
