@@ -10,4 +10,7 @@ const AuthController = require('./auth/AuthController');
 app.use('/users', UserController);
 app.use('/auth', AuthController);
 
+// verify JWT for protected routes
+app.use;
+
 module.exports = app;

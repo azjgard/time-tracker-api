@@ -6,6 +6,9 @@ router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json());
 var User = require('./User');
 
+const {getJWT, verifyJWT} = require('../auth/JWTController');
+const {jwtProtected} = require('../middleware');
+
 // CREATES A NEW USER
 router.post('/', function(req, res) {
   User.create(
@@ -34,14 +37,14 @@ router.get('/', function(req, res) {
 });
 
 // GETS A SINGLE USER FROM THE DATABASE
-router.get('/:id', function(req, res) {
-  User.findById(req.params.id, function(err, user) {
-    if (err)
-      return res.status(500).send('There was a problem finding the user.');
-    if (!user) return res.status(404).send('No user found.');
-    res.status(200).send(user);
-  });
-});
+// router.get('/:id', function(req, res) {
+//   User.findById(req.params.id, function(err, user) {
+//     if (err)
+//       return res.status(500).send('There was a problem finding the user.');
+//     if (!user) return res.status(404).send('No user found.');
+//     res.status(200).send(user);
+//   });
+// });
 
 // DELETES A USER FROM THE DATABASE
 router.delete('/:id', function(req, res) {
@@ -62,6 +65,12 @@ router.put('/:id', function(req, res) {
       return res.status(500).send('There was a problem updating the user.');
     res.status(200).send(user);
   });
+});
+
+// The user can get information about themselves if they're logged
+// in and the client has stored a JWT
+router.get('/me', jwtProtected, async (req, res) => {
+  res.status(200).send(req.user);
 });
 
 module.exports = router;
