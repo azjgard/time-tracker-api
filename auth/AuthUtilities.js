@@ -1,8 +1,4 @@
 const bcrypt = require('bcryptjs');
-// const hashPassword = password => bcrypt.hashSync(password, 8);
-// const hashPassword = passord => new Promise((resolve, reject) =>
-//   bcrypt.genSalt(10, (err, salt) => )
-// )
 
 const genSalt = num =>
   new Promise(resolve => bcrypt.genSalt(num, (err, salt) => resolve(salt)));

@@ -4,10 +4,10 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 
-const UserController = require('./user/UserController');
+const UserRoutes = require('./user/UserRoutes');
 const AuthController = require('./auth/AuthController');
 
-app.use('/users', UserController);
+app.use('/users', UserRoutes);
 app.use('/auth', AuthController);
 
 // verify JWT for protected routes
