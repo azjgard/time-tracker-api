@@ -17,7 +17,7 @@ const getUserByEmail = email => User.findOne({email}, {password: 0});
 /**
  * Gets a user that matches either the provided email or the provided name
  *
- * @returns {object} User (Promise)
+ * @returns {object} User
  */
 const getUserByEmailOrName = (email, name) =>
   User.findOne({$or: [{email}, {name}]});
@@ -25,7 +25,7 @@ const getUserByEmailOrName = (email, name) =>
 /**
  * Creates a new user
  *
- * @returns {object} User (Promise)
+ * @returns {object} User
  */
 const createUser = (name, email, password) =>
   User.create({

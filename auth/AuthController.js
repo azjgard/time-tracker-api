@@ -8,7 +8,7 @@ const key = process.env.JWT_KEY;
  *
  * @returns {string} A signed JWT
  */
-const generateToken = (data, expiresInHours) =>
+const generateJWT = (data, expiresInHours) =>
   jwt.sign(data, key, {
     expiresIn: expiresInHours * 3600,
   });
@@ -27,8 +27,6 @@ const verifyJWT = token =>
       resolve(decoded);
     });
   });
-
-module.exports.jwt = {generateToken, getJWT, verifyJWT};
 
 /**
  * Generates a salt that can be used to encrypt a password
@@ -60,4 +58,18 @@ const hashPassword = password =>
     resolve(hashedPassword);
   });
 
-module.exports.hash = {hashPassword};
+/**
+ * Compares plain text password with hashed password to determine if they match
+ *
+ * @returns {boolean} Promise that resolves to true or false (true if
+ * passwords match)
+ */
+const comparePasswords = (plainTextPassword, hashedPassword) =>
+  new Promise(async resolve =>
+    bcrypt.compare(plainTextPassword, hashedPassword, (err, res) =>
+      resolve(res),
+    ),
+  );
+
+module.exports.jwt = {generateJWT, getJWT, verifyJWT};
+module.exports.hash = {hashPassword, comparePasswords};
