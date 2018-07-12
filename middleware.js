@@ -8,7 +8,7 @@ const jwtProtected = async (req, res, next) => {
 
   const {id: _id} = await verifyJWT(jwt).catch(() => unauthorized(res));
 
-  const user = await User.findOne({_id});
+  const user = await User.findOne({_id}, {password: 0});
 
   req.user = user;
 
