@@ -6,8 +6,15 @@ const db = require('./db');
 
 const UserRoutes = require('./user/UserRoutes');
 const AuthRoutes = require('./auth/AuthRoutes');
+const ClientRoutes = require('./Client/ClientRoutes');
 
-const {errorCodes: errorCodesMiddleware} = require('./middleware');
+const {
+  jwtProtected: jwtMiddleware,
+  errorCodes: errorCodesMiddleware,
+} = require('./middleware');
+
+const cors = require('cors');
+app.use(cors());
 
 // Adds the _sendError method to the res object in all routes that
 // can be used to send a status of 500 and an error message
@@ -15,5 +22,6 @@ app.use(errorCodesMiddleware);
 
 app.use('/users', UserRoutes);
 app.use('/auth', AuthRoutes);
+app.use('/client', jwtMiddleware, ClientRoutes);
 
 module.exports = app;

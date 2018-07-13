@@ -32,4 +32,29 @@ const errorCodes = (req, res, next) => {
   next();
 };
 
-module.exports = {errorCodes, jwtProtected};
+/**
+ * When called as middleware, verifies that the strings in requiredKeys
+ * array are present as keys on the req.body
+ *
+ * @returns {function}
+ */
+const requireKeys = requiredKeys => {
+  return (req, res, next) => {
+    const requestKeys = Object.keys(req.body);
+    const missingKeys = [];
+
+    requiredKeys.map(key => {
+      if (!requestKeys.includes(key)) {
+        missingKeys.push(key);
+      }
+    });
+
+    if (missingKeys.length > 0) {
+      res.status(500).send(`Missing keys: ${missingKeys.join(', ')}`);
+    } else {
+      next();
+    }
+  };
+};
+
+module.exports = {errorCodes, jwtProtected, requireKeys};

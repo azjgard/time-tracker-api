@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 
 const key = process.env.JWT_KEY;
 
+// TODO: as it turns out, the bcrypt library actually supports promimses
+// instead of callbacks, so that code needs to be refactored.
+
 /**
  * Generates a JWT from 'data' that expires in 'expiresInHours' hours
  *
