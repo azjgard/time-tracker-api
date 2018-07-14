@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const db = require('./db');
+const cors = require('cors');
 
 const UserRoutes = require('./user/UserRoutes');
 const AuthRoutes = require('./auth/AuthRoutes');
@@ -13,7 +14,6 @@ const {
   errorCodes: errorCodesMiddleware,
 } = require('./middleware');
 
-const cors = require('cors');
 app.use(cors());
 
 // Adds the _sendError method to the res object in all routes that
