@@ -41,13 +41,16 @@ router.post('/login', async (req, res) => {
     );
 
     if (passwordCorrect) {
+      console.log('correct password');
       const token = AuthController.jwt.generateJWT({id: user._id}, 24);
       res.status(200).send({auth: true, token});
     } else {
-      res._sendError('Incorrect username or password.');
+      console.log('incorrect password');
+      res.status(200).send({auth: false});
     }
   } else {
-    res._sendError('No user exists with those credentials.');
+    console.log('incorrect username or email');
+    res.status(200).send({auth: false});
   }
 });
 
