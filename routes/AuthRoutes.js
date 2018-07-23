@@ -1,7 +1,9 @@
 const router = require('../router');
-const AuthController = require('./AuthController');
-
-const {getUserByEmailOrName, createUser} = require('../user/UserController');
+const AuthController = require('../controllers/AuthController');
+const {
+  getUserByEmailOrName,
+  createUser,
+} = require('../controllers/UserController');
 
 // Client sends username/email and password in request body. If a user
 // doesn't already exist with those credentials, then a new user is created

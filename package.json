@@ -19,6 +19,8 @@
     "mongoose": "^5.0.1"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "migrate-mongoose": "^3.2.2",
     "nodemon": "^1.18.1"
   }
 }

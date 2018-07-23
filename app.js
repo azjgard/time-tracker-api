@@ -5,9 +5,9 @@ const app = express();
 const db = require('./db');
 const cors = require('cors');
 
-const UserRoutes = require('./user/UserRoutes');
-const AuthRoutes = require('./auth/AuthRoutes');
-const ClientRoutes = require('./Client/ClientRoutes');
+const UserRoutes = require('./routes/UserRoutes');
+const AuthRoutes = require('./routes/AuthRoutes');
+const ClientRoutes = require('./routes/ClientRoutes');
 
 const {
   jwtProtected: jwtMiddleware,

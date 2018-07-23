@@ -1,4 +1,4 @@
-const Client = require('./Client');
+const Client = require('../models/ClientModel');
 
 const createClient = (userId, clientObject) =>
   Client.create({

@@ -1,5 +1,5 @@
-const {getJWT, verifyJWT} = require('./auth/AuthController').jwt;
-const {getUserById} = require('./user/UserController');
+const {getJWT, verifyJWT} = require('./controllers/AuthController').jwt;
+const {getUserById} = require('./controllers/UserController');
 
 const unauthorized = res => res.status(500).send({message: 'Unauthorized.'});
 

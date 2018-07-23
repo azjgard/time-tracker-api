@@ -1,5 +1,5 @@
 const router = require('../router');
-const ClientController = require('./ClientController');
+const ClientController = require('../controllers/ClientController');
 const {requireKeys} = require('../middleware');
 
 router.post(

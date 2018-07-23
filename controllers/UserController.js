@@ -1,4 +1,4 @@
-const User = require('./User');
+const User = require('../models/UserModel');
 
 /**
  * Gets a user by the provided ID
